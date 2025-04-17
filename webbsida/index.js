@@ -163,7 +163,7 @@ searchCityButton.addEventListener("click", async function () {
         return;
     }
 
-    // Fråga erik om 400 statusarna som inte fungerar eftersom upplägget ovan stoppar det. hur ska jag lösa det så att jag får dem!
+    // Fråga erik om 400 statusarna som inte fungerar eftersom upplägget ovan stoppar det. Hur ska jag lösa det så att jag får dem!
 
     if (cities.length === 0) {
         const noResultDiv = document.createElement("div");
