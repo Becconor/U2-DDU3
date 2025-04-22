@@ -139,6 +139,18 @@ addCityButton.addEventListener("click", function () {
 
 
 // // 3
+async function GETHandlerSearchCities(text) {
+    const response = await fetch(`http://localhost:8000/cities/search?text=${text}`);
+    const allCitiesWithText = await response.json();
+    return allCitiesWithText;
+}
+
+async function GETHandlerSearchCitiesWithCountry(text, country) {
+    const response = await fetch(`http://localhost:8000/cities/search?text=${text}&country=${country}`);
+    const allCitiesWithTextAndCountry = await response.json();
+    return allCitiesWithTextAndCountry;
+}
+
 searchCityButton.addEventListener("click", async function () {
     const textInput = document.getElementById("textInput").value;
     const countryTextInput = document.getElementById("countryTextInput").value;
@@ -161,8 +173,6 @@ searchCityButton.addEventListener("click", async function () {
         return;
     }
 
-    // Fråga erik om 400 statusarna som inte fungerar eftersom upplägget ovan stoppar det. Hur ska jag lösa det så att jag får dem!
-
     if (cities.length === 0) {
         const noResultDiv = document.createElement("div");
         noResultDiv.classList.add("searchCity");
@@ -181,15 +191,3 @@ searchCityButton.addEventListener("click", async function () {
     document.getElementById("textInput").value = "";
     document.getElementById("countryTextInput").value = "";
 });
-
-async function GETHandlerSearchCities(text) {
-    const response = await fetch(`http://localhost:8000/cities/search?text=${text}`);
-    const allCitiesWithText = await response.json();
-    return allCitiesWithText;
-}
-
-async function GETHandlerSearchCitiesWithCountry(text, country) {
-    const response = await fetch(`http://localhost:8000/cities/search?text=${text}&country=${country}`);
-    const allCitiesWithTextAndCountry = await response.json();
-    return allCitiesWithTextAndCountry;
-}

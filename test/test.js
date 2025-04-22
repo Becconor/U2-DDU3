@@ -1,5 +1,3 @@
-// fråga 1 - 7(alla async/await dvs 50 %)
-// 1
 async function GETHandler() {
     const response = await fetch("http://localhost:8000/cities");
     if (!response.ok) {
@@ -18,7 +16,7 @@ async function GETDriver() {
 
 GETDriver();
 
-// 2
+
 async function POSTHandler() {
     const response = await fetch("http://localhost:8000/cities", {
         method: "POST",
@@ -40,7 +38,7 @@ async function POSTDriver() {
 
 POSTDriver();
 
-// 3
+
 async function DELETEHandler() {
     const response = await fetch("http://localhost:8000/cities", {
         method: "DELETE",
@@ -64,7 +62,7 @@ async function DELETEDriver() {
 
 DELETEDriver();
 
-// 4
+
 async function GETHandlerAllCities() {
     const response = await fetch("http://localhost:8000/cities");
     const citiesList = await response.json();
@@ -77,7 +75,7 @@ async function GETDriverAllCities() {
     console.log(resource);
 }
 
-// 5
+
 async function GETHandlerCityById(id) {
     const response = await fetch(`http://localhost:8000/cities/${id}`);
     const cityWithId = await response.json();
@@ -90,7 +88,7 @@ async function GETDriverCityById(id) {
     console.log(resource);
 }
 
-// 6
+
 async function GETHandlerSearchCities(text) {
     const response = await fetch(`http://localhost:8000/cities/search?text=${text}`);
     const allCitiesWithText = await response.json();
@@ -103,7 +101,7 @@ async function GETDriverSearchCities(text) {
     console.log(resource);
 }
 
-// 7
+
 async function GETHandlerSearchCitiesWithCountry(text, country) {
     const response = await fetch(`http://localhost:8000/cities/search?text=${text}&country=${country}`);
     const allCitiesWithTextAndCountry = await response.json();
@@ -117,8 +115,8 @@ async function GETDriverSearchCitiesWithCountry(text, country) {
 }
 
 
-// felkoder = fråga 8 - 14(alla fetch dvs 50 %)
-// 8
+
+
 fetch("http://localhost:8000/cities", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -132,7 +130,7 @@ fetch("http://localhost:8000/cities", {
         return response.text();
     });
 
-// 9
+
 fetch("http://localhost:8000/cities", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -145,7 +143,7 @@ fetch("http://localhost:8000/cities", {
         return response.text();
     });
 
-// 10
+
 fetch("http://localhost:8000/cities", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
@@ -156,7 +154,7 @@ fetch("http://localhost:8000/cities", {
         return response.text();
     });
 
-// 11
+
 fetch("http://localhost:8000/cities", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
@@ -167,7 +165,7 @@ fetch("http://localhost:8000/cities", {
         return response.text();
     });
 
-// 12
+
 fetch("http://localhost:8000/messages", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -182,14 +180,14 @@ fetch("http://localhost:8000/messages", {
         return response.text();
     });
 
-// 13
+
 fetch("http://localhost:8000/cities/search")
     .then((response) => {
         console.log("Förfrågan 13: Sökning utan text-param");
         return response.text();
     });
 
-// 14
+
 fetch("http://localhost:8000/mordor", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },

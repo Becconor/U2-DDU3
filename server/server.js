@@ -23,8 +23,8 @@ async function handler(request) {
 
     const headers = new Headers();
     headers.set("Access-Control-Allow-Origin", "*");
-    headers.set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
-    headers.set("Access-Control-Allow-Headers", "Content-Type"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
+    // headers.set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
+    // headers.set("Access-Control-Allow-Headers", "Content-Type"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
     headers.set("Content-Type", "application/json"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
 
     if (request.method == "OPTIONS") {
@@ -47,7 +47,6 @@ async function handler(request) {
                     headers: headers
                 });
             }
-
 
             if (url.searchParams.has("text") && url.searchParams.has("country")) {
                 const textValue = url.searchParams.get("text");
@@ -88,8 +87,6 @@ async function handler(request) {
                     headers: headers
                 });
             }
-
-            // fråga om jag ska sätta ihop de två if satserna ovan eller om jag kan ha dem såhär????!!!
         }
 
         const route = new URLPattern({ pathname: "/cities/:id" });
@@ -205,7 +202,7 @@ async function handler(request) {
         }
     }
 
-    return new Response("Bad request", {
+    return new Response("Felaktig endpoint!", {
         status: 400,
         headers: headers,
     });
