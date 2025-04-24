@@ -23,9 +23,9 @@ async function handler(request) {
 
     const headers = new Headers();
     headers.set("Access-Control-Allow-Origin", "*");
-    // headers.set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
-    // headers.set("Access-Control-Allow-Headers", "Content-Type"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
-    headers.set("Content-Type", "application/json"); // fråga erik om varför dessa behövs för att koden ska fungera!!!
+    headers.set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Content-Type");
+    headers.set("Content-Type", "application/json");
 
     if (request.method == "OPTIONS") {
         return new Response(null, { headers: headers });
@@ -33,7 +33,6 @@ async function handler(request) {
 
     if (request.method == "GET") {
         if (url.pathname == "/cities") {
-            console.log(cities);
             return new Response(JSON.stringify(cities), {
                 status: 200,
                 headers: headers
@@ -41,7 +40,9 @@ async function handler(request) {
         }
 
         if (url.pathname == "/cities/search") {
-            if (!url.searchParams.has("text")) {
+            const textValue = url.searchParams.get("text");
+
+            if (!textValue) {
                 return new Response(JSON.stringify("Sökparametern text finns inte med!"), {
                     status: 400,
                     headers: headers
@@ -49,16 +50,8 @@ async function handler(request) {
             }
 
             if (url.searchParams.has("text") && url.searchParams.has("country")) {
-                const textValue = url.searchParams.get("text");
                 const countryValue = url.searchParams.get("country");
                 let includeBothValues = [];
-
-                if (!textValue) {
-                    return new Response(JSON.stringify("Sökparametern text måste ha ett värde!"), {
-                        status: 400,
-                        headers: headers
-                    });
-                }
 
                 for (let city of cities) {
                     if (city.name.includes(textValue) && city.country == countryValue) {
@@ -112,14 +105,6 @@ async function handler(request) {
     }
 
     if (request.method == "POST") {
-        // if (request.headers.get("Content-Type") !== "application/json") {
-        //     return new Response(JSON.stringify("Content-Type måste vara 'application/json'"), {
-        //         status: 400,
-        //         headers: headers
-        //     });
-        // }
-        // Fråga om detta skulle vara nödvändigt!
-
         if (url.pathname == "/cities") {
             const inputBody = await request.json();
             const inputName = inputBody.name;
@@ -152,9 +137,7 @@ async function handler(request) {
                 country: inputCountry
             };
 
-            console.log(`Du har precis POST via /cities: ${newCity}`)
             cities.push(newCity);
-            console.log(cities);
 
             return new Response(JSON.stringify(newCity), {
                 status: 200,
@@ -164,18 +147,9 @@ async function handler(request) {
     }
 
     if (request.method == "DELETE") {
-        // if (request.headers.get("Content-Type") !== "application/json") {
-        //     return new Response(JSON.stringify("Content-Type måste vara 'application/json'"), {
-        //         status: 400,
-        //         headers: headers
-        //     });
-        // }
-        // Fråga om detta skulle vara nödvändigt!
-
         if (url.pathname == "/cities") {
             const body = await request.json();
             const cityId = Number(body.id);
-            console.log(cityId);
 
             if (!cityId) {
                 return new Response(JSON.stringify("Id saknas!"), {
@@ -202,7 +176,7 @@ async function handler(request) {
         }
     }
 
-    return new Response("Felaktig endpoint!", {
+    return new Response(JSON.stringify("Felaktig endpoint!"), {
         status: 400,
         headers: headers,
     });

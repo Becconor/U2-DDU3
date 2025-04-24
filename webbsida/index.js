@@ -1,11 +1,11 @@
 const addCityButton = document.getElementById("addCityButton");
 const searchCityButton = document.getElementById("searchCityButton");
 
-// 1
 async function GETHandler() {
     const response = await fetch("http://localhost:8000/cities");
     if (!response.ok) {
-        console.log("Någonting gick fel!");
+        alert("Någonting gick fel!");
+        return;
     } else {
         const cityList = await response.json();
         return cityList;
@@ -19,14 +19,17 @@ async function DELETEHandler(city) {
         body: JSON.stringify({ id: city.id })
     });
 
-    const responseText = await response.text();
-    return responseText;
+    if (!response.ok) {
+        alert("Någonting gick fel!");
+        return;
+    } else {
+        const responseText = await response.text();
+        return responseText;
+    }
 }
 
 async function GETDriver() {
     const resource = await GETHandler();
-    console.log("Förfrågan 1: Alla städer");
-    console.log(resource);
 
     for (let city of resource) {
         let cityDiv = document.createElement("div");
@@ -45,18 +48,11 @@ async function GETDriver() {
         cityDiv.appendChild(cityDeleteButton);
 
         cityDeleteButton.addEventListener("click", async function () {
-            console.log(city.id);
+            const resource = await DELETEHandler(city);
 
-            async function DELETEDriver() {
-                const resource = await DELETEHandler(city);
-                console.log("Förfrågan 3: Staden är borttagen från listan:", resource);
-
-                if (resource.includes("Delete ok")) {
-                    cityDiv.remove();
-                }
+            if (resource.includes("Delete ok")) {
+                cityDiv.remove();
             }
-
-            DELETEDriver();
         });
     }
 }
@@ -64,7 +60,6 @@ async function GETDriver() {
 GETDriver();
 
 
-// 2
 async function POSTHandler() {
     const response = await fetch("http://localhost:8000/cities", {
         method: "POST",
@@ -75,80 +70,78 @@ async function POSTHandler() {
         })
     });
 
-    const city = await response.json();
-    return city;
+    if (response.status == 409) {
+        alert("Staden finns redan i listan");
+        inputName.value = "";
+        inputCountry.value = "";
+        return;
+    } else {
+        const city = await response.json();
+        return city;
+    }
 }
 
-addCityButton.addEventListener("click", function () {
+addCityButton.addEventListener("click", async function () {
     const inputName = document.getElementById("inputName");
     const inputCountry = document.getElementById("inputCountry");
 
-    async function POSTDriver() {
-        const POSTResource = await POSTHandler();
-
-        if (inputName.value == "" || inputCountry.value == "") {
-            alert("Stad eller Land saknas!");
-            return;
-        }
-
-        if (!POSTResource.name || !POSTResource.country) {
-            alert("Staden finns redan i listan");
-            inputName.value = "";
-            inputCountry.value = "";
-            return;
-        }
-
-        console.log("Förfrågan 2: Staden är tillagd i listan:", POSTResource);
-
-        let cityDiv = document.createElement("div");
-        let cityName = document.createElement("p");
-        let cityDeleteButton = document.createElement("div");
-
-        cityDiv.classList.add("city");
-        cityDeleteButton.classList.add("deleteButton");
-
-        cityName.textContent = `${POSTResource.name},  ${POSTResource.country}`;
-        cityDeleteButton.textContent = "delete";
-
-        const cityItem = document.getElementById("listOfCities");
-        cityItem.appendChild(cityDiv);
-        cityDiv.appendChild(cityName);
-        cityDiv.appendChild(cityDeleteButton);
-
-        cityDeleteButton.addEventListener("click", async function () {
-            console.log(POSTResource.id);
-
-            async function DELETEDriver() {
-                const resource = await DELETEHandler(POSTResource);
-                console.log("Förfrågan 3: Staden är borttagen från listan:", resource);
-
-                if (resource.includes("Delete ok")) {
-                    cityDiv.remove(); // Tar bort stadens div från DOM:en
-                }
-            }
-
-            DELETEDriver();
-        });
-
-        inputName.value = "";
-        inputCountry.value = "";
+    if (inputName.value == "" || inputCountry.value == "") {
+        alert("Stad eller Land saknas!");
+        return;
     }
 
-    POSTDriver();
+    const POSTResource = await POSTHandler();
+
+    let cityDiv = document.createElement("div");
+    let cityName = document.createElement("p");
+    let cityDeleteButton = document.createElement("div");
+
+    cityDiv.classList.add("city");
+    cityDeleteButton.classList.add("deleteButton");
+
+    cityName.textContent = `${POSTResource.name},  ${POSTResource.country}`;
+    cityDeleteButton.textContent = "delete";
+
+    const cityItem = document.getElementById("listOfCities");
+    cityItem.appendChild(cityDiv);
+    cityDiv.appendChild(cityName);
+    cityDiv.appendChild(cityDeleteButton);
+
+    cityDeleteButton.addEventListener("click", async function () {
+        const resource = await DELETEHandler(POSTResource);
+
+        if (resource.includes("Delete ok")) {
+            cityDiv.remove();
+        }
+    });
+
+    inputName.value = "";
+    inputCountry.value = "";
 });
 
 
-// // 3
 async function GETHandlerSearchCities(text) {
     const response = await fetch(`http://localhost:8000/cities/search?text=${text}`);
-    const allCitiesWithText = await response.json();
-    return allCitiesWithText;
+
+    if (!response.ok) {
+        alert("Någonting gick fel!");
+        return;
+    } else {
+        const allCitiesWithText = await response.json();
+        return allCitiesWithText;
+    }
 }
 
 async function GETHandlerSearchCitiesWithCountry(text, country) {
     const response = await fetch(`http://localhost:8000/cities/search?text=${text}&country=${country}`);
-    const allCitiesWithTextAndCountry = await response.json();
-    return allCitiesWithTextAndCountry;
+
+    if (!response.ok) {
+        alert("Någonting gick fel!");
+        return;
+    } else {
+        const allCitiesWithTextAndCountry = await response.json();
+        return allCitiesWithTextAndCountry;
+    }
 }
 
 searchCityButton.addEventListener("click", async function () {
@@ -162,12 +155,8 @@ searchCityButton.addEventListener("click", async function () {
 
     if (textInput && countryTextInput) {
         cities = await GETHandlerSearchCitiesWithCountry(textInput, countryTextInput);
-        console.log("Förfrågan 7: Städer som uppfyller både text och land");
-        console.log(cities);
     } else if (textInput) {
         cities = await GETHandlerSearchCities(textInput);
-        console.log("Förfrågan 6: Städer som innehåller din text");
-        console.log(cities);
     } else {
         alert("Du måste skriva något i Text-fältet för att kunna söka!");
         return;
