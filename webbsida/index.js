@@ -23,7 +23,7 @@ async function DELETEHandler(city) {
         alert("Någonting gick fel!");
         return;
     } else {
-        const responseText = await response.text();
+        const responseText = await response.json();
         return responseText;
     }
 }
