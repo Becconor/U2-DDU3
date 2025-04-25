@@ -33,7 +33,7 @@ async function DELETEHandler() {
     });
 
     if (response.status == 200) {
-        console.log("Förfrågan 3: Staden med id 2 är borttagen från listan:", response.body);
+        console.log("Förfrågan 3: Staden med id 2 är borttagen från listan");
 
         await GETHandlerAllCities();
         await GETHandlerCityById(43);
