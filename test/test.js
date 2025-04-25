@@ -35,19 +35,11 @@ async function DELETEHandler() {
     if (response.status == 200) {
         console.log("Förfrågan 3: Staden med id 2 är borttagen från listan:", response.body);
 
-
         await GETHandlerAllCities();
         await GETHandlerCityById(43);
         await GETHandlerSearchCities("en");
         await GETHandlerSearchCitiesWithCountry("en", "Sweden");
-
-        // await GETDriverAllCities();
-        // await GETDriverCityById(43);                                // Till förfrågan 5
-        // await GETDriverSearchCities("en");                          // Till förfrågan 6
-        // await GETDriverSearchCitiesWithCountry("en", "Sweden");
     }
-    // const responseText = await response.json();
-    // return responseText;
 }
 
 async function GETHandlerAllCities() {
@@ -55,10 +47,7 @@ async function GETHandlerAllCities() {
 
     if (response.status == 200) {
         console.log("Förfrågan 4: Array minus Lille pluss Malmö");
-        // console.log(response);
     }
-    // const citiesList = await response.json();
-    // return citiesList;
 }
 
 async function GETHandlerCityById(id) {
@@ -66,11 +55,7 @@ async function GETHandlerCityById(id) {
 
     if (response.status == 200) {
         console.log(`Förfrågan 5: Malmö med id ${id}`);
-        // console.log(response);
     }
-
-    // const cityWithId = await response.json();
-    // return cityWithId;
 }
 
 async function GETHandlerSearchCities(text) {
@@ -78,11 +63,7 @@ async function GETHandlerSearchCities(text) {
 
     if (response.status == 200) {
         console.log("Förfrågan 6: Städer som innehåller 'en'");
-        // console.log(response);
     }
-
-    // const allCitiesWithText = await response.json();
-    // return allCitiesWithText;
 }
 
 async function GETHandlerSearchCitiesWithCountry(text, country) {
@@ -90,11 +71,7 @@ async function GETHandlerSearchCitiesWithCountry(text, country) {
 
     if (response.status == 200) {
         console.log("Förfrågan 7: Städer som uppfyller både text och land");
-        // console.log(response);
     }
-
-    // const allCitiesWithTextAndCountry = await response.json();
-    // return allCitiesWithTextAndCountry;
 }
 
 
