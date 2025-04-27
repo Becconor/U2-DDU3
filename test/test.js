@@ -16,7 +16,7 @@ async function POSTHandler() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             name: "Malmö",
-            country: "Swenden"
+            country: "Sweden"
         })
     });
 
